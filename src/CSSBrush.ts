@@ -22,7 +22,7 @@ export class CSSBrush implements Brush {
     const rgb = this.getRgb(id)
     const background = rgbHex(rgb)
     const border = rgbHex(rgb.map(x => Math.max(0, x - 32)))
-    const color = rgb.filter(x => x > 200).length >= 2 ? '#000000' : '#ffffff'
+    const color = this.getLightness(rgb[0], rgb[1], rgb[2]) >= 0.5 ? '#000000' : '#ffffff'
     let idStr = `%c ${id} `
     if (rest.length > 1 && rest[0].indexOf('%c') !== -1) {
       idStr += rest.shift()
@@ -34,5 +34,13 @@ export class CSSBrush implements Brush {
     // It is ok to overlep color.
     // Not trying to be too smart about it.
     return this.map[text] = this.map[text] || this.colors[this.count++ % this.option.maxColor]
+  }
+
+  // Get Lightness of HSL
+  private getLightness(r: number, g: number, b: number){
+    r /= 255
+    g /= 255
+    b /= 255
+    return (Math.max(r, g, b) + Math.min(r, g, b)) / 2
   }
 }
