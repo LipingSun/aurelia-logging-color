@@ -22,7 +22,7 @@ export class CSSBrush implements Brush {
     const rgb = this.getRgb(id)
     const background = rgbHex(rgb)
     const border = rgbHex(rgb.map(x => Math.max(0, x - 32)))
-    const color = rgb.every(x => x < 220) ? '#ffffff' : '#000000'
+    const color = rgb.filter(x => x > 200).length >= 2 ? '#000000' : '#ffffff'
     let idStr = `%c ${id} `
     if (rest.length > 1 && rest[0].indexOf('%c') !== -1) {
       idStr += rest.shift()
